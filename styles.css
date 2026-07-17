@@ -20,6 +20,7 @@ html {
 
 body {
   margin: 0;
+  overflow-x: clip;
   font-family: "Segoe UI", Arial, sans-serif;
   color: var(--text);
   background:
@@ -156,8 +157,10 @@ a {
   min-height: calc(100vh - 72px);
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
-  align-items: center;
-  gap: 52px;
+  grid-template-rows: auto auto;
+  align-content: center;
+  column-gap: 52px;
+  row-gap: 22px;
   position: relative;
 }
 
@@ -179,6 +182,10 @@ a {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.featured-heading {
+  font-size: clamp(1rem, 1.7vw, 1.1rem);
 }
 
 h1,
@@ -216,6 +223,47 @@ h3 {
   line-height: 1.35;
 }
 
+.about-title {
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  line-height: 0.94;
+}
+
+.about-statement {
+  margin-bottom: 0;
+}
+
+#journey .section-heading {
+  width: 100%;
+  max-width: none;
+  text-align: left;
+}
+
+.journey-title {
+  font-size: clamp(1.9rem, 4.52vw, 3.502rem);
+  line-height: 1.05;
+}
+
+.journey-statement {
+  max-width: none;
+  margin-bottom: 0;
+}
+
+@media (min-width: 901px) {
+  #journey .section-heading {
+    width: calc(100% + 20px);
+  }
+
+  .journey-title {
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 1200px) {
+  #journey .section-heading {
+    width: calc(100% + 28px);
+  }
+}
+
 .hero-intro,
 .copy-block p,
 .goal-card p,
@@ -229,21 +277,32 @@ h3 {
   max-width: 680px;
 }
 
-.hero-signal {
-  width: min(620px, 100%);
-  margin: 24px 0 6px;
+.hero-title {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.hero-details {
+  grid-column: 1;
+  grid-row: 2;
+  min-width: 0;
+}
+
+.section-divider {
+  width: min(760px, calc(100% - 40px));
+  margin: -26px auto;
   pointer-events: none;
   opacity: 0.48;
 }
 
-.hero-signal svg {
+.section-divider svg {
   display: block;
   width: 100%;
   height: 76px;
   overflow: visible;
 }
 
-.hero-signal path {
+.section-divider path {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -267,6 +326,17 @@ h3 {
   flex-wrap: wrap;
   gap: 14px;
   margin-top: 32px;
+}
+
+.hero-navigation {
+  justify-content: flex-start;
+  width: 100%;
+  margin-left: 0;
+  text-align: left;
+}
+
+.hero-navigation .button {
+  flex: 1 1 calc((100% - 28px) / 3);
 }
 
 .button,
@@ -323,15 +393,15 @@ h3 {
 }
 
 .hero-visual {
-  position: relative;
-  display: grid;
-  gap: 22px;
-  justify-items: center;
-  align-self: center;
+  display: contents;
 }
 
 .profile-frame {
+  grid-column: 2;
+  grid-row: 1;
   position: relative;
+  justify-self: center;
+  align-self: end;
   z-index: 1;
   width: clamp(132px, 18vw, 188px);
   aspect-ratio: 1;
@@ -365,8 +435,16 @@ h3 {
 }
 
 .hero-panel {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: stretch;
   width: 100%;
   padding: 28px;
+}
+
+.hero-panel > .panel-label {
+  color: var(--gold);
+  -webkit-text-fill-color: var(--gold);
 }
 
 .panel-label,
@@ -413,6 +491,37 @@ h3 {
 .goal-card,
 .contact-actions {
   padding: 28px;
+}
+
+#about .content-grid {
+  align-items: stretch;
+}
+
+#about .copy-block p:last-child {
+  margin-bottom: 0;
+}
+
+#about .personality-card {
+  height: 100%;
+  padding: 18px;
+}
+
+#about .personality-card .card-kicker {
+  display: block;
+  margin-bottom: 8px;
+  font-size: clamp(1.35rem, 2vw, 1.55rem);
+  line-height: 1;
+}
+
+#about .personality-card h3 {
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+#about .personality-card p {
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  line-height: 1.35;
 }
 
 .timeline {
@@ -633,14 +742,34 @@ h3 {
   .hero {
     min-height: auto;
     padding-top: 70px;
+    grid-template-rows: auto;
+    row-gap: 22px;
+  }
+
+  .hero::before {
+    right: 0;
   }
 
   .hero-visual {
+    grid-column: 1;
+    grid-row: auto;
+    display: grid;
+    gap: 22px;
     justify-items: start;
   }
 
   .profile-frame {
+    grid-column: auto;
+    grid-row: auto;
+    justify-self: auto;
+    align-self: auto;
     width: clamp(118px, 34vw, 156px);
+  }
+
+  .hero-panel {
+    grid-column: auto;
+    grid-row: auto;
+    align-self: auto;
   }
 
   .card-grid {
@@ -690,7 +819,7 @@ h3 {
 
   body::before,
   .ambient-canvas,
-  .hero-signal {
+  .section-divider {
     animation: none;
     display: none;
   }
