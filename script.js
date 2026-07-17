@@ -236,3 +236,52 @@ function startAmbientSignal() {
 }
 
 startAmbientSignal();
+
+function fitValueHeading() {
+  const heading = document.querySelector(".value-title");
+  const cardGrid = document.querySelector("#bring .card-grid");
+
+  if (!heading || !cardGrid) return;
+
+  if (window.innerWidth <= 850) {
+    heading.style.removeProperty("font-size");
+    heading.style.removeProperty("white-space");
+    return;
+  }
+
+  const availableWidth = cardGrid.getBoundingClientRect().width;
+  const range = document.createRange();
+  range.selectNodeContents(heading);
+  heading.style.whiteSpace = "nowrap";
+
+  let minimumSize = 28;
+  let maximumSize = 96;
+
+  for (let step = 0; step < 16; step += 1) {
+    const candidateSize = (minimumSize + maximumSize) / 2;
+    heading.style.fontSize = `${candidateSize}px`;
+
+    if (range.getBoundingClientRect().width <= availableWidth * 0.995) {
+      minimumSize = candidateSize;
+    } else {
+      maximumSize = candidateSize;
+    }
+  }
+
+  heading.style.fontSize = `${minimumSize}px`;
+}
+
+fitValueHeading();
+
+if (document.fonts?.ready) {
+  document.fonts.ready.then(fitValueHeading);
+}
+
+const valueCardGrid = document.querySelector("#bring .card-grid");
+
+if (valueCardGrid && "ResizeObserver" in window) {
+  const valueHeadingObserver = new ResizeObserver(fitValueHeading);
+  valueHeadingObserver.observe(valueCardGrid);
+} else {
+  window.addEventListener("resize", fitValueHeading);
+}
